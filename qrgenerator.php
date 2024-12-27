@@ -23,6 +23,8 @@
             $text = urlencode($_POST["qrtext"]);
             // Display the generated QR code image
             echo "<img src='https://api.qrserver.com/v1/create-qr-code/?data={$text}&amp;size=150x150' alt='QR Code'>";
+            // Create a button to download the QR code image
+            echo "<br><button onclick='downloadQRCode(\"https://api.qrserver.com/v1/create-qr-code/?data={$text}&amp;size=150x150\")'>Download QR Code</button>";
         } else {
             echo "<p>Please enter text to generate a QR code.</p>";
         }
@@ -31,7 +33,17 @@
     <br>
     <!-- Button to exit and return to the main page -->
     <button onclick="location.href='index.php'">Exit</button>
+
+    <script>
+        // Function to download the QR code image
+        function downloadQRCode(url) {
+            // Create a link to download the image
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = 'qrcode.png';
+            link.click();
+        }
+    </script>
 </body>
 
 </html>
-
