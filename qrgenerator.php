@@ -1,17 +1,5 @@
 <?php
-
-// Check if the form is submitted and the input is not empty
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!empty($_POST["qrtext"])) {
-        // Encode the input text for URL usage
-        $text = urlencode($_POST["qrtext"]);
-    } else {
-        $text = "";
-    }
-} else {
-    $text = "";
-}
-
+$text = isset($_POST['qrtext']) ? htmlspecialchars($_POST['qrtext'], ENT_QUOTES) : '';
 ?>
 
 <!DOCTYPE html>
@@ -21,40 +9,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
+    <link rel="stylesheet" href="style.css">
     <!-- Include the qrcode library -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
 <body>
-    <hi>QR Code Generator</hi>
-    <!-- Form to input text for QR code generation -->
-    <form action="qrgenerator.php" method="post">
-        <label>Enter text to generate QR code:</label><br>
-        <input type="text" name="qrtext" value="<?php echo htmlspecialchars($text, ENT_QUOTES); ?>" required><br>
-        <input type="submit" value="Generate QR Code">
-    </form>
+    <h1>QR Code Generator</h1>
+    <div class="content">
+        <!-- Form to input text for QR code generation -->
+        <form action="qrgenerator.php" method="post" style="text-align: center; margin-bottom: 20px;">
+            <label for="qrtext" style="display: block; margin-bottom: 10px;">Enter text to generate QR code:</label>
+            <input type="text" id="qrtext" name="qrtext" value="<?php echo $text; ?>" required style="display: block; width: 100%; max-width: 400px; padding: 10px; margin: 0 auto 10px auto; box-sizing: border-box;">
+            <input type="submit" value="Generate QR Code" style="padding: 10px 20px; width: 100%; max-width: 400px; margin: 0 auto; display: block;">
+        </form>
 
-    <?php
-    if (!empty($text)) {
-        // Display the generated QR code image
-        echo "<div id='qrcode'></div><script>new QRCode(document.getElementById('qrcode'), '{$text}');</script>";
-        // Create a button to download the QR code as an image
-        echo "<button id='download'>Download QR Code</button>";
-        echo "<script>document.getElementById('download').addEventListener('click', function() {
-            var qr = document.getElementById('qrcode').querySelector('canvas');
-            var link = document.createElement('a');
-            link.href = qr.toDataURL();
-            link.download = 'qrcode.png';
-            link.click();
-        });</script>";
-    } else {
-        echo "<p>Please enter text to generate a QR code.</p>";
-    }
-    ?>
-    <br>
-    <!-- Button to exit and return to the main page -->
-    <button onclick="location.href='index.php'">Exit</button>
+        <?php if (!empty($text)): ?>
+            <!-- Display the generated QR code image -->
+            <div id="qrcode" style="margin: 10px; justify-content: center;"></div>
+            <script>
+                new QRCode(document.getElementById('qrcode'), '<?php echo $text; ?>');
+            </script>
+            <!-- Create a button to download the QR code as an image -->
+            <button id="download">Download QR Code</button>
+            <script>
+                document.getElementById('download').addEventListener('click', function() {
+                    var qrCanvas = document.getElementById('qrcode').querySelector('canvas');
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = qrCanvas.toDataURL();
+                    downloadLink.download = 'qrcode.png';
+                    downloadLink.click();
+                });
+            </script>
+        <?php else: ?>
+            <p>Please enter text to generate a QR code.</p>
+        <?php endif; ?>
 
+        <br>
+        <!-- Button to exit and return to the main page -->
+        <button onclick="location.href='index.php'">Exit</button>
+
+    </div>
 </body>
 
 </html>
