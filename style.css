@@ -20,26 +20,26 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-}
-
-button {
-  display: block;
   width: 100%;
-  margin-bottom: 10px;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
 button {
   padding: 10px;
-  background-color: #15ad2a;
+  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 button:hover {
-  background-color: #0a7b19;
+  background-color: #0056b3;
 }
 
 video {
