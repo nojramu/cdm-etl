@@ -11,8 +11,8 @@
 <body>
     <h1>QR Code Tools</h1>
     <div class="content">
-        <button onclick="location.href='qrgenerator.php'">Generate QR Code</button>
-        <button onclick="location.href='qrreader.php'">Read QR Code</button>
+        <button onclick="window.location.href='qrgenerator.php'">Generate QR Code</button>
+        <button onclick="window.location.href='qrreader.php'">Read QR Code</button>
     </div>
 </body>
 

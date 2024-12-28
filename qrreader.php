@@ -14,77 +14,63 @@
 
 <body>
     <h1>QR Code Reader</h1>
-    <br>
     <div class="content">
-        <!-- Video element for QR code scanning -->
         <video id="preview"></video>
-
-        <!-- Hidden file input for uploading QR code images -->
         <input type="file" id="fileInput" accept="image/*" style="display: none;" />
-
-        <br>
-        <!-- Button to trigger file input click -->
         <button onclick="document.getElementById('fileInput').click();">Upload image</button>
-        <br>
-        <!-- Button to exit and return to the main page -->
         <button onclick="location.href='index.php'">Exit</button>
-
-        <script>
-            // Initialize the QR code scanner
-            function initializeScanner() {
-                var scanner = new Instascan.Scanner({
-                    video: document.getElementById('preview'),
-                    scanPeriod: 5
-                });
-                scanner.addListener('scan', function(content) {
-                    alert(content);
-                });
-                Instascan.Camera.getCameras().then(function(cameras) {
-                    if (cameras.length > 0) {
-                        scanner.start(cameras[0]);
-                    } else {
-                        console.error('No cameras found.');
-                    }
-                }).catch(function(e) {
-                    console.error(e);
-                });
-            }
-
-            // Handle QR code image upload and scanning
-            function handleQRCodeUpload() {
-                document.getElementById('fileInput').addEventListener('change', function(event) {
-                    var file = event.target.files[0];
-                    if (file) {
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-                            var img = new Image();
-                            img.onload = function() {
-                                var canvas = document.createElement('canvas');
-                                canvas.width = img.width;
-                                canvas.height = img.height;
-                                var context = canvas.getContext('2d');
-                                context.drawImage(img, 0, 0);
-                                var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                                var code = jsQR(imageData.data, canvas.width, canvas.height);
-                                if (code) {
-                                    alert(code.data);
-                                } else {
-                                    alert('No QR code found.');
-                                }
-                            };
-                            img.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-
-            // Initialize functions
-            initializeScanner();
-            handleQRCodeUpload();
-        </script>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeScanner();
+            handleQRCodeUpload();
+        });
+
+        function initializeScanner() {
+            const scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5 });
+            scanner.addListener('scan', function(content) {
+                alert(content);
+            });
+            Instascan.Camera.getCameras().then(function(cameras) {
+                if (cameras.length > 0) {
+                    scanner.start(cameras[0]);
+                } else {
+                    console.error('No cameras found.');
+                }
+            }).catch(function(e) {
+                console.error(e);
+            });
+        }
+
+        function handleQRCodeUpload() {
+            document.getElementById('fileInput').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            const context = canvas.getContext('2d');
+                            context.drawImage(img, 0, 0);
+                            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                            const code = jsQR(imageData.data, canvas.width, canvas.height);
+                            if (code) {
+                                alert(code.data);
+                            } else {
+                                alert('No QR code found.');
+                            }
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -10,14 +10,12 @@ $text = isset($_POST['qrtext']) ? htmlspecialchars($_POST['qrtext'], ENT_QUOTES)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Include the qrcode library -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
 <body>
     <h1>QR Code Generator</h1>
     <div class="content">
-        <!-- Form to input text for QR code generation -->
         <form action="qrgenerator.php" method="post" style="text-align: center; margin-bottom: 20px;">
             <label for="qrtext" style="display: block; margin-bottom: 10px;">Enter text to generate QR code:</label>
             <input type="text" id="qrtext" name="qrtext" value="<?php echo $text; ?>" required style="display: block; width: 100%; max-width: 400px; padding: 10px; margin: 0 auto 10px auto; box-sizing: border-box;">
@@ -25,12 +23,10 @@ $text = isset($_POST['qrtext']) ? htmlspecialchars($_POST['qrtext'], ENT_QUOTES)
         </form>
 
         <?php if (!empty($text)): ?>
-            <!-- Display the generated QR code image -->
             <div id="qrcode" style="margin: 10px; justify-content: center;"></div>
             <script>
                 new QRCode(document.getElementById('qrcode'), '<?php echo $text; ?>');
             </script>
-            <!-- Create a button to download the QR code as an image -->
             <button id="download">Download QR Code</button>
             <script>
                 document.getElementById('download').addEventListener('click', function() {
@@ -46,9 +42,7 @@ $text = isset($_POST['qrtext']) ? htmlspecialchars($_POST['qrtext'], ENT_QUOTES)
         <?php endif; ?>
 
         <br>
-        <!-- Button to exit and return to the main page -->
         <button onclick="location.href='index.php'">Exit</button>
-
     </div>
 </body>
 
